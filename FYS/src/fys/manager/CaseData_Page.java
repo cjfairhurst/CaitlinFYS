@@ -2,6 +2,7 @@ package fys.manager;
 
 import fys.FYS;
 import fys.PDF;
+import fys.PDFGenerator;
 import fys.TrackUser;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -1588,14 +1589,10 @@ public class CaseData_Page extends javax.swing.JPanel {
             shippingCity = shippingcity_textfield.getText();
             shippingCountry = shippingcountry_textfield.getText();
 
-            PDF pdf = new PDF();
+            PDFGenerator pdf = new PDFGenerator();
             pdf.generateClient(firstName, lastName, country, city, zipcode, streetAddress, phonenumber, email, shippingCountry, shippingZipcode, shippingStreetAddress, shippingCity);
 
-            try {
-                pdf.save(firstName + lastName + zipcode + ".pdf");
-            } catch (COSVisitorException ex) {
-                Logger.getLogger(CaseData_Page.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            pdf.save(firstName +"|"+ lastName +"|"+ zipcode + ".pdf");
 
         } else if (baggage_radiobutton.isSelected()) {
 
@@ -1613,14 +1610,10 @@ public class CaseData_Page extends javax.swing.JPanel {
                 case_status = "resolved";
             }
 
-            PDF pdf = new PDF();
+            PDFGenerator pdf = new PDFGenerator();
             pdf.generateBaggage(baggageID, flightNumber, brand, color, description, case_status);
 
-            try {
-                pdf.save(firstName + lastName + zipcode + ".pdf");
-            } catch (COSVisitorException ex) {
-                Logger.getLogger(CaseData_Page.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            pdf.save(baggageID + "|"+  flightNumber +"|"+ color + ".pdf");
         }
     }//GEN-LAST:event_PDF_buttonMouseClicked
 
