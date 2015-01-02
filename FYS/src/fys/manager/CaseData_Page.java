@@ -1592,7 +1592,7 @@ public class CaseData_Page extends javax.swing.JPanel {
             PDFGenerator pdf = new PDFGenerator();
             pdf.generateClient(firstName, lastName, country, city, zipcode, streetAddress, phonenumber, email, shippingCountry, shippingZipcode, shippingStreetAddress, shippingCity);
 
-            pdf.save(firstName +"|"+ lastName +"|"+ zipcode + ".pdf");
+            pdf.save(firstName +"_"+ lastName +"_"+ zipcode + ".pdf");
 
         } else if (baggage_radiobutton.isSelected()) {
 
@@ -1613,7 +1613,7 @@ public class CaseData_Page extends javax.swing.JPanel {
             PDFGenerator pdf = new PDFGenerator();
             pdf.generateBaggage(baggageID, flightNumber, brand, color, description, case_status);
 
-            pdf.save(baggageID + "|"+  flightNumber +"|"+ color + ".pdf");
+            pdf.save(baggageID + "_"+  flightNumber +"_"+ color + ".pdf");
         }
     }//GEN-LAST:event_PDF_buttonMouseClicked
 

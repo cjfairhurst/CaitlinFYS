@@ -1,23 +1,15 @@
 package fys;
 
-import fys.manager.CaseData_Page;
 import java.awt.Color;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.util.PDFMergerUtility;
 
 /**
  *
@@ -32,7 +24,7 @@ public class PDFGenerator {
         try {
 
             // Create a document and add a page to it
-            this.document = PDDocument.load("C:\\Users\\Alternate\\Documents\\GitHub\\Fasten-Your-Seatbelt\\v2.0\\TemplateV3\\Template.pdf");
+            this.document = PDDocument.load("C:\\Users\\Caitlin\\Documents\\GitHub\\CaitlinFYS\\FYS\\Template.pdf");
             PDPage page = (PDPage) document.getDocumentCatalog().getAllPages().get(0);
             this.document.addPage(page);
 
