@@ -20,16 +20,26 @@ public class PDFGenerator {
     PDDocument document;
     PDPageContentStream contentStream;
 
-    public PDFGenerator() {
+    public PDFGenerator(String type) {
         try {
+            if (type == "baggage"){
 
             // Create a document and add a page to it
-            this.document = PDDocument.load("C:\\Users\\Caitlin\\Documents\\GitHub\\CaitlinFYS\\FYS\\Template.pdf");
+            this.document = PDDocument.load("C:\\Users\\Caitlin\\Documents\\GitHub\\CaitlinFYS\\FYS\\Templatebaggage.pdf");
             PDPage page = (PDPage) document.getDocumentCatalog().getAllPages().get(0);
             this.document.addPage(page);
 
             this.contentStream = new PDPageContentStream(document, page, true, true);
+            }
+            if (type == "client"){
+                // Create a document and add a page to it
+            this.document = PDDocument.load("C:\\Users\\Caitlin\\Documents\\GitHub\\CaitlinFYS\\FYS\\Templateclient.pdf");
+            PDPage page = (PDPage) document.getDocumentCatalog().getAllPages().get(0);
+            this.document.addPage(page);
 
+            this.contentStream = new PDPageContentStream(document, page, true, true);
+            }
+                
         } catch (IOException ex) {
             ex.printStackTrace();
         }

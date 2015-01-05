@@ -1589,7 +1589,7 @@ public class CaseData_Page extends javax.swing.JPanel {
             shippingCity = shippingcity_textfield.getText();
             shippingCountry = shippingcountry_textfield.getText();
 
-            PDFGenerator pdf = new PDFGenerator();
+            PDFGenerator pdf = new PDFGenerator("client");
             pdf.generateClient(firstName, lastName, country, city, zipcode, streetAddress, phonenumber, email, shippingCountry, shippingZipcode, shippingStreetAddress, shippingCity);
 
             pdf.save(firstName +"_"+ lastName +"_"+ zipcode + ".pdf");
@@ -1610,7 +1610,7 @@ public class CaseData_Page extends javax.swing.JPanel {
                 case_status = "resolved";
             }
 
-            PDFGenerator pdf = new PDFGenerator();
+            PDFGenerator pdf = new PDFGenerator("baggage");
             pdf.generateBaggage(baggageID, flightNumber, brand, color, description, case_status);
 
             pdf.save(baggageID + "_"+  flightNumber +"_"+ color + ".pdf");
