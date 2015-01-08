@@ -543,19 +543,19 @@ public class QueryManager {
         String searchresults = "";
         switch (searchType) {
             case "baggage_id": {
-                searchresults = "SELECT baggage_id, flight_number, brand, color, description, owner, case_status FROM baggage WHERE baggage_id = ?";
+                searchresults = "SELECT baggage_dbnumber, baggage_id, flight_number, brand, color, description, owner, case_status FROM baggage WHERE baggage_id = ?";
                 break;
             }
             case "flight_number": {
-                searchresults = "SELECT baggage_id, flight_number, brand, color, description, owner, case_status FROM baggage WHERE flight_number = ?";
+                searchresults = "SELECT baggage_dbnumber, baggage_id, flight_number, brand, color, description, owner, case_status FROM baggage WHERE flight_number = ?";
                 break;
             }
             case "first_name": {
-                searchresults = "SELECT first_name, last_name, email, telephone_number, street_address, zipcode, city, country FROM client WHERE first_name = ?";
+                searchresults = "SELECT client_id, first_name, last_name, email, telephone_number, street_address, zipcode, city, country FROM client WHERE first_name = ?";
                 break;
             }
             case "last_name": {
-                searchresults = "SELECT first_name, last_name, email, telephone_number, street_address, zipcode, city, country FROM client WHERE last_name = ?";
+                searchresults = "SELECT client_id, first_name, last_name, email, telephone_number, street_address, zipcode, city, country FROM client WHERE last_name = ?";
                 break;
             }
         }
