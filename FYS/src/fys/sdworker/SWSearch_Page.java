@@ -1,7 +1,6 @@
 package fys.sdworker;
 
 import fys.FYS;
-import fys.PDFGenerator;
 import fys.TrackUser;
 import fys.appmanager.ManageAccounts_Page;
 import java.sql.ResultSet;
@@ -302,7 +301,6 @@ public class SWSearch_Page extends javax.swing.JPanel {
         flightnumber_field = new javax.swing.JLabel();
         title2 = new javax.swing.JLabel();
         edit_button = new javax.swing.JLabel();
-        PDF_button1 = new javax.swing.JLabel();
         viewback_button = new javax.swing.JLabel();
         view_background = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
@@ -817,26 +815,7 @@ public class SWSearch_Page extends javax.swing.JPanel {
                 edit_buttonMouseExited(evt);
             }
         });
-        view_panel.add(edit_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 470, -1, -1));
-
-        PDF_button1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        PDF_button1.setForeground(new java.awt.Color(255, 255, 255));
-        PDF_button1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fys/Images/button_short.png"))); // NOI18N
-        PDF_button1.setText("Generate PDF");
-        PDF_button1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        PDF_button1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        PDF_button1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                PDF_button1MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                PDF_button1MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                PDF_button1MouseExited(evt);
-            }
-        });
-        view_panel.add(PDF_button1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 470, -1, -1));
+        view_panel.add(edit_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 480, -1, -1));
 
         viewback_button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         viewback_button.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1376,83 +1355,8 @@ public class SWSearch_Page extends javax.swing.JPanel {
         manual_panel.setEnabled(false);
     }//GEN-LAST:event_exitManualMouseClicked
 
-    private void PDF_button1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PDF_button1MouseExited
-        ImageIcon II = new ImageIcon(getClass().getResource("Images/button_short.png"));
-        PDF_button1.setIcon(II);
-    }//GEN-LAST:event_PDF_button1MouseExited
-
-    private void PDF_button1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PDF_button1MouseEntered
-        ImageIcon II = new ImageIcon(getClass().getResource("Images/button_rollover_short.png"));
-        PDF_button1.setIcon(II);
-    }//GEN-LAST:event_PDF_button1MouseEntered
-
-    private void PDF_button1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PDF_button1MouseClicked
-        String firstName = null;
-        String lastName = null;
-        String email = null;
-        String phonenumber = null;
-        String streetAddress = null;
-        String zipcode = null;
-        String city = null;
-        String country = null;
-        String shippingStreetAddress = null;
-        String shippingZipcode = null;
-        String shippingCity = null;
-        String shippingCountry = null;
-        String baggageID;
-        String flightNumber;
-        String brand;
-        String color;
-        String description;
-        String case_status = null;
-
-        if (viewclient_radiobutton.isSelected()) {
-
-            firstName = firstname_textfield.getText();
-            lastName = lastname_textfield.getText();
-            email = email_textfield.getText();
-            phonenumber = phonenumber_textfield.getText();
-            streetAddress = streetaddress_textfield.getText();
-            zipcode = zipcode_textfield.getText();
-            city = city_textfield.getText();
-            country = country_textfield.getText();
-            shippingStreetAddress = shippingstreetaddress_textfield.getText();
-            shippingZipcode = shippingzipcode_textfield.getText();
-            shippingCity = shippingcity_textfield.getText();
-            shippingCountry = shippingcountry_textfield.getText();
-
-            PDFGenerator pdf = new PDFGenerator("client");
-            pdf.generateClient(firstName, lastName, country, city, zipcode, streetAddress, phonenumber, email, shippingCountry, shippingZipcode, shippingStreetAddress, shippingCity);
-
-            pdf.save(firstName +"_"+ lastName +"_"+ zipcode + ".pdf");
-
-        } else if (viewbaggage_radiobutton.isSelected()) {
-
-            baggageID = baggageid_textfield.getText();
-            flightNumber = flightnumber_textfield.getText();
-            brand = brand_textfield.getText();
-            color = color_textfield.getText();
-            description = description_textfield.getText();
-
-            if (found_radiobutton.isSelected()) {
-                case_status = "found";
-            } else if (lost_radiobutton.isSelected()) {
-                case_status = "lost";
-            } else if (resolved_radiobutton.isSelected()) {
-                case_status = "resolved";
-            }
-
-            PDFGenerator pdf = new PDFGenerator("baggage");
-            pdf.generateBaggage(baggageID, flightNumber, brand, color, description, case_status);
-
-            pdf.save(baggageID + "_"+  flightNumber +"_"+ color + ".pdf");
-        }
-    }//GEN-LAST:event_PDF_button1MouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel PDF_button;
-    private javax.swing.JLabel PDF_button1;
     private javax.swing.JLabel account_type1;
     private javax.swing.JLabel account_type3;
     private javax.swing.JLabel background;
