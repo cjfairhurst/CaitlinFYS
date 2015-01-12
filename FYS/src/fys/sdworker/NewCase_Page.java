@@ -30,6 +30,10 @@ public class NewCase_Page extends javax.swing.JPanel {
         casestatus.add(found_radiobutton);
         casestatus.add(lost_radiobutton);
         casestatus.add(resolved_radiobutton);
+        
+        ButtonGroup casetype = new ButtonGroup();
+        casetype.add(client_radiobutton);
+        casetype.add(baggage_radiobutton);
     }
 
     public void setEnabledClient(boolean enabled) {
@@ -87,37 +91,6 @@ public class NewCase_Page extends javax.swing.JPanel {
         }
 
         FYS.getQueryManager().saveCase(typeCase, firstName, lastName, email, telephoneNumber, streetAddress, zipcode, city, country, shippingStreetAddress, shippingZipcode, shippingCity, shippingCountry, baggageID, flightNumber, brand, color, description, caseStatus);
-    }
-    
-    public void saveConnectedCase () {
-        String firstName = firstname_field.getText();
-        String lastName = lastname_field.getText();
-        String email = email_field.getText();
-        String telephoneNumber = phonenumber_field.getText();
-        String streetAddress = streetaddress_field.getText();
-        String zipcode = zipcode_field.getText();
-        String city = city_field.getText();
-        String country = country_field.getText();
-        String shippingStreetAddress = shippingstreetaddress_field.getText();
-        String shippingZipcode = shippingzipcode_field.getText();
-        String shippingCity = shippingcity_field.getText();
-        String shippingCountry = shippingcountry_field.getText();
-
-        String baggageID = baggageid_field.getText();
-        String flightNumber = flightnumber_field.getText();
-        String brand = brand_field.getText();
-        String color = color_field.getText();
-        String description = description_field.getText();
-
-        if (found_radiobutton.isSelected()) {
-            caseStatus = "found";
-        } else if (lost_radiobutton.isSelected()) {
-            caseStatus = "lost";
-        } else if (resolved_radiobutton.isSelected()) {
-            caseStatus = "resolved";
-        }
-        
-        FYS.getQueryManager().saveConnectedCase(firstName, lastName, email, telephoneNumber, streetAddress, zipcode, city, country, shippingStreetAddress, shippingZipcode, shippingCity, shippingCountry, baggageID, flightNumber, brand, color, description, caseStatus);
     }
 
     /**
@@ -649,16 +622,7 @@ public class NewCase_Page extends javax.swing.JPanel {
         if (!client_radiobutton.isSelected() && !baggage_radiobutton.isSelected()) {
             JOptionPane.showMessageDialog(null, "Please select which type of case you wish to make first.");
         } else {
-            if (client_radiobutton.isSelected() && baggage_radiobutton.isSelected()) {
-                if (emptyClientField || emptyBaggageField) {
-                    emptyfield_warning.setVisible(true);
-                    emptyfield_warning.setEnabled(true);
-                } else {
-                    saveConnectedCase();
-                    FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "NewCase_Page", "Created Connected Case " + firstname_field.getText() + " " + lastname_field.getText() + ".");
-                }
-            }
-            else if (client_radiobutton.isSelected()) {
+            if (client_radiobutton.isSelected()) {
                 if (emptyClientField) {
                     emptyfield_warning.setVisible(true);
                     emptyfield_warning.setEnabled(true);

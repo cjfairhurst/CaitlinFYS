@@ -89,10 +89,10 @@ public class QueryManager {
 
         switch (searchType) {
             case "username":
-                getLog = "SELECT * FROM log WHERE username = ? ORDER BY date DESC LIMIT 1000";
+                getLog = "SELECT username AS 'Username', page AS 'Page', action AS 'Action', date AS 'Timestamp' FROM log WHERE username = ? ORDER BY date DESC LIMIT 1000";
                 break;
             case "date":
-                getLog = "SELECT * FROM log WHERE date BETWEEN ? AND ? ORDER BY date DESC LIMIT 1000";
+                getLog = "SELECT username AS 'Username', page AS 'Page', action AS 'Action', date AS 'Timestamp' FROM log WHERE date BETWEEN ? AND ? ORDER BY date DESC LIMIT 1000";
                 break;
         }
 
@@ -127,7 +127,7 @@ public class QueryManager {
     public ResultSet getAllLogs() {
         try {
             FYS.getDbmanager().openConnection();
-            String getAllLogs = "SELECT * FROM log ORDER BY date DESC LIMIT 1000";
+            String getAllLogs = "SELECT username AS 'Username', page AS 'Page', action AS 'Action', date AS 'Timestamp' FROM log ORDER BY date DESC LIMIT 1000";
 
             prdstmt = FYS.getDbmanager().getConnection().prepareStatement(getAllLogs);
             rs = prdstmt.executeQuery();
@@ -276,59 +276,6 @@ public class QueryManager {
         FYS.getDbmanager().closeConnection();
     }
 
-    public void saveConnectedCase(String firstName, String lastName, String email, String telephoneNumber,
-            String streetAddress, String zipcode, String city, String country, String shippingStreetAddress,
-            String shippingZipcode, String shippingCity, String shippingCountry, String baggageID, String flightNumber,
-            String brand, String color, String description, String caseStatus) {
-
-        FYS.getDbmanager().openConnection();
-        String addClientCase = "INSERT INTO client (first_name, last_name, email, telephone_number, street_address, zipcode, city, country, shipping_street_address, shipping_zipcode, shipping_city, shipping_country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        String addBaggageCase = "INSERT INTO baggage (baggage_id, flight_number, brand, color, description, case_status, owner) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        String getClientID = "SELECT * FROM FYS.client WHERE first_name = ? AND last_name = ? AND street_address = ?";
-
-        try {
-            prdstmt = FYS.getDbmanager().getConnection().prepareStatement(addClientCase);
-            prdstmt.setString(1, firstName);
-            prdstmt.setString(2, lastName);
-            prdstmt.setString(3, email);
-            prdstmt.setString(4, telephoneNumber);
-            prdstmt.setString(5, streetAddress);
-            prdstmt.setString(6, zipcode);
-            prdstmt.setString(7, city);
-            prdstmt.setString(8, country);
-            prdstmt.setString(9, shippingStreetAddress);
-            prdstmt.setString(10, shippingZipcode);
-            prdstmt.setString(11, shippingCity);
-            prdstmt.setString(12, shippingCountry);
-            prdstmt.executeUpdate();
-
-            prdstmt = FYS.getDbmanager().getConnection().prepareStatement(getClientID);
-            prdstmt.setString(1, firstName);
-            prdstmt.setString(2, lastName);
-            prdstmt.setString(3, streetAddress);
-            rs = prdstmt.executeQuery();
-
-            String clientID = rs.getString("client_id");
-            System.out.println(clientID);
-            
-
-            prdstmt = FYS.getDbmanager().getConnection().prepareStatement(addBaggageCase);
-            prdstmt.setString(1, baggageID);
-            prdstmt.setString(2, flightNumber);
-            prdstmt.setString(3, brand);
-            prdstmt.setString(4, color);
-            prdstmt.setString(5, description);
-            prdstmt.setString(6, caseStatus);
-            prdstmt.setString(7, clientID);
-            prdstmt.executeUpdate();
-            
-            JOptionPane.showMessageDialog(null, "The cases were successfully saved.", "Case Saved", JOptionPane.INFORMATION_MESSAGE);
-        } catch (SQLException ex) {
-            Logger.getLogger(QueryManager.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "An error occured and the cases were not saved.", "Database Error", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
     /**
      * Checks the database if a username already exists.
      *
@@ -370,10 +317,14 @@ public class QueryManager {
 
         switch (typeCase) {
             case "client":
-                tabledata = "SELECT client_id, first_name, last_name, email, telephone_number, street_address, zipcode, city, country FROM client";
+                tabledata = "SELECT client_id AS 'Client ID', first_name AS 'First Name', "
+                        + "last_name AS 'Last Name', email AS 'Email', telephone_number AS 'Phone Number',"
+                        + " street_address AS 'Street Address', zipcode AS 'Zipcode', city AS 'City', country AS 'Country' FROM client";
                 break;
             case "baggage":
-                tabledata = "SELECT baggage_dbnumber, baggage_id, flight_number, brand, color, description, owner, case_status FROM baggage";
+                tabledata = "SELECT baggage_dbnumber AS 'Database ID', baggage_id AS 'Baggage ID', "
+                        + "flight_number AS 'Flight Number', brand AS 'Brand', color AS 'Color', "
+                        + "description AS 'Description', owner AS 'Owner', case_status AS 'Case Status' FROM baggage";
                 break;
         }
 
@@ -543,19 +494,27 @@ public class QueryManager {
         String searchresults = "";
         switch (searchType) {
             case "baggage_id": {
-                searchresults = "SELECT baggage_dbnumber, baggage_id, flight_number, brand, color, description, owner, case_status FROM baggage WHERE baggage_id = ?";
+                searchresults = "SELECT baggage_dbnumber AS 'Database ID', baggage_id AS 'Baggage ID', "
+                        + "flight_number AS 'Flight Number', brand AS 'Brand', color AS 'Color', "
+                        + "description AS 'Description', owner AS 'Owner', case_status AS 'Case Status' FROM baggage WHERE baggage_id = ?";
                 break;
             }
             case "flight_number": {
-                searchresults = "SELECT baggage_dbnumber, baggage_id, flight_number, brand, color, description, owner, case_status FROM baggage WHERE flight_number = ?";
+                searchresults = "SELECT baggage_dbnumber AS 'Database ID', baggage_id AS 'Baggage ID', "
+                        + "flight_number AS 'Flight Number', brand AS 'Brand', color AS 'Color', "
+                        + "description AS 'Description', owner AS 'Owner', case_status AS 'Case Status' FROM baggage WHERE flight_number = ?";
                 break;
             }
             case "first_name": {
-                searchresults = "SELECT client_id, first_name, last_name, email, telephone_number, street_address, zipcode, city, country FROM client WHERE first_name = ?";
+                searchresults = "SELECT client_id AS 'Client ID', first_name AS 'First Name', "
+                        + "last_name AS 'Last Name', email AS 'Email', telephone_number AS 'Phone Number',"
+                        + " street_address AS 'Street Address', zipcode AS 'Zipcode', city AS 'City', country AS 'Country' FROM client WHERE first_name = ?";
                 break;
             }
             case "last_name": {
-                searchresults = "SELECT client_id, first_name, last_name, email, telephone_number, street_address, zipcode, city, country FROM client WHERE last_name = ?";
+                searchresults = "SELECT client_id AS 'Client ID', first_name AS 'First Name', "
+                        + "last_name AS 'Last Name', email AS 'Email', telephone_number AS 'Phone Number',"
+                        + " street_address AS 'Street Address', zipcode AS 'Zipcode', city AS 'City', country AS 'Country' FROM client WHERE last_name = ?";
                 break;
             }
         }
@@ -582,7 +541,9 @@ public class QueryManager {
      */
     public ResultSet fillTableDate(String fromDate, String toDate) {
         FYS.getDbmanager().openConnection();
-        String casedate = "SELECT baggage_id, flight_number, brand, color, description, owner, case_status FROM baggage WHERE date BETWEEN ? AND ?";
+        String casedate = "SELECT baggage_dbnumber AS 'Database ID', baggage_id AS 'Baggage ID', "
+                        + "flight_number AS 'Flight Number', brand AS 'Brand', color AS 'Color', "
+                        + "description AS 'Description', owner AS 'Owner', case_status AS 'Case Status' FROM baggage WHERE date BETWEEN ? AND ?";
 
         try {
             prdstmt = FYS.getDbmanager().getConnection().prepareStatement(casedate);
@@ -661,7 +622,9 @@ public class QueryManager {
      */
     public void graphData(String fromDate, String toDate, Array found, Array lost, Array resolved) {
         FYS.getDbmanager().openConnection();
-        String graphData = "SELECT baggage_id, flight_number, brand, color, description, owner, case_status FROM baggage BETWEEN ? AND ?";
+        String graphData = "SELECT baggage_dbnumber AS 'Database ID', baggage_id AS 'Baggage ID', "
+                        + "flight_number AS 'Flight Number', brand AS 'Brand', color AS 'Color', "
+                        + "description AS 'Description', owner AS 'Owner', case_status AS 'Case Status' FROM baggage BETWEEN ? AND ?";
 
         try {
             prdstmt = FYS.getDbmanager().getConnection().prepareStatement(graphData);
@@ -722,7 +685,7 @@ public class QueryManager {
      */
     public ResultSet fillTableMA() {
         FYS.getDbmanager().openConnection();
-        String tabledata = "SELECT employee_id, first_name, last_name, username, function, location FROM employee";
+        String tabledata = "SELECT employee_id AS 'Employee ID', first_name AS 'First Name', last_name AS 'Last Name', username AS 'Username', function AS 'Function', location AS 'Location' FROM employee";
 
         try {
             prdstmt = FYS.getDbmanager().getConnection().prepareStatement(tabledata);
@@ -746,19 +709,19 @@ public class QueryManager {
         String searchresults = "";
         switch (searchType) {
             case "employee_id": {
-                searchresults = "SELECT employee_id, first_name, last_name, username, function, location FROM employee WHERE employee_id = ?";
+                searchresults = "SELECT employee_id AS 'Employee ID', first_name AS 'First Name', last_name AS 'Last Name', username AS 'Username', function AS 'Function', location AS 'Location' FROM employee WHERE employee_id = ?";
                 break;
             }
             case "username": {
-                searchresults = "SELECT employee_id, first_name, last_name, username, function, location FROM employee WHERE username = ?";
+                searchresults = "SELECT employee_id AS 'Employee ID', first_name AS 'First Name', last_name AS 'Last Name', username AS 'Username', function AS 'Function', location AS 'Location' FROM employee WHERE username = ?";
                 break;
             }
             case "first_name": {
-                searchresults = "SELECT employee_id, first_name, last_name, username, function, location FROM employee WHERE first_name = ?";
+                searchresults = "SELECT employee_id AS 'Employee ID', first_name AS 'First Name', last_name AS 'Last Name', username AS 'Username', function AS 'Function', location AS 'Location' FROM employee WHERE first_name = ?";
                 break;
             }
             case "last_name": {
-                searchresults = "SELECT employee_id, first_name, last_name, username, function, location FROM employee WHERE last_name = ?";
+                searchresults = "SELECT employee_id AS 'Employee ID', first_name AS 'First Name', last_name AS 'Last Name', username AS 'Username', function AS 'Function', location AS 'Location' FROM employee WHERE last_name = ?";
                 break;
             }
         }
