@@ -10,6 +10,14 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+/**
+ * This class enables app-managers to manage (update and delete) accounts.
+ *
+ * @author Caitlin Fairhurst (500703510)
+ * @author Lars Cornelissen (500683862)
+ * @author Floris van Lent (500717249)
+ * @version 1.0
+ */
 public class ManageAccounts_Page extends javax.swing.JPanel {
 
     String selectedRow;
@@ -17,9 +25,15 @@ public class ManageAccounts_Page extends javax.swing.JPanel {
     boolean tableClicked = false;
     boolean radiobuttonSelected = false;
 
+    /**
+     * Initiates the page, groups the radio buttons, hides the context-aware manual, shows the right
+     * panel, sets a welcome text and updates the table.
+     */
     public ManageAccounts_Page() {
         initComponents();
+
         welcomeuser.setText("Welcome " + TrackUser.getCurrentUser() + ".");
+
         view_panel.setVisible(false);
         view_panel.setEnabled(false);
         edit_panel.setVisible(false);
@@ -38,21 +52,20 @@ public class ManageAccounts_Page extends javax.swing.JPanel {
     }
 
     /**
-     * Fills fields with data from the database based on the selected row within
-     * the table.
+     * Fills fields with data from the database based on the selected row within the table.
      *
      * @param rs
      * @throws SQLException
      */
     public void viewAccount(ResultSet rs) throws SQLException {
         if (rs.next()) {
-            String employee_id = rs.getString("employee_id");
-            String first_name = rs.getString("first_name");
-            String last_name = rs.getString("last_name");
+            String employeeID = rs.getString("employee_id");
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
             String username = rs.getString("username");
             String password = rs.getString("password");
             String email = rs.getString("email");
-            String telephone_number = rs.getString("telephone_number");
+            String telephoneNumber = rs.getString("telephone_number");
             String function = rs.getString("function");
             String location = rs.getString("location");
 
@@ -73,38 +86,37 @@ public class ManageAccounts_Page extends javax.swing.JPanel {
                     accounttype_field.setText("Unknown");
                     break;
             }
-            employeeid_field.setText(employee_id);
-            firstname_field.setText(first_name);
-            lastname_field.setText(last_name);
+            employeeid_field.setText(employeeID);
+            firstname_field.setText(firstName);
+            lastname_field.setText(lastName);
             username_field.setText(username);
             password_field.setText(password);
             email_field.setText(email);
-            phonenumber_field.setText(telephone_number);
+            phonenumber_field.setText(telephoneNumber);
             location_field.setText(location);
 
-            employeeid_textfield.setText(employee_id);
-            firstname_textfield.setText(first_name);
-            lastname_textfield.setText(last_name);
+            employeeid_textfield.setText(employeeID);
+            firstname_textfield.setText(firstName);
+            lastname_textfield.setText(lastName);
             username_textfield.setText(username);
             password_textfield.setText(password);
             email_textfield.setText(email);
-            phonenumber_textfield.setText(telephone_number);
+            phonenumber_textfield.setText(telephoneNumber);
             location_combo.setSelectedItem(location);
         }
-
     }
 
     /**
-     * Sets a number of variables to be used in a query to edit the details of a
-     * particular row in the employee database.
+     * Sets a number of variables to be used in a query to edit the details of a particular row in
+     * the employee database.
      */
     public void editAccount() {
         String employeeID = employeeid_textfield.getText();
         String firstName = firstname_textfield.getText();
         String lastName = lastname_textfield.getText();
-        String userName = username_textfield.getText();
-        String passWord = password_textfield.getText();
-        String eMail = email_textfield.getText();
+        String username = username_textfield.getText();
+        String password = password_textfield.getText();
+        String email = email_textfield.getText();
         String phoneNumber = phonenumber_textfield.getText();
         String location = location_combo.getSelectedItem().toString();
 
@@ -119,14 +131,10 @@ public class ManageAccounts_Page extends javax.swing.JPanel {
             employeeFunction = "";
         }
 
-        FYS.getQueryManager().editAccount(employeeID, firstName, lastName, userName, passWord, eMail, phoneNumber, employeeFunction, location, selectedRow);
+        FYS.getQueryManager().editAccount(employeeID, firstName, lastName, username, password,
+                email, phoneNumber, employeeFunction, location, selectedRow);
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -709,8 +717,8 @@ public class ManageAccounts_Page extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void newaccount_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newaccount_buttonMouseEntered
-        ImageIcon II = new ImageIcon(getClass().getResource("Images/button_rollover_long.png"));//Create a rollover effect for the button by changing the background icon.
-        newaccount_button.setIcon(II);//Sets the new background icon.
+        ImageIcon II = new ImageIcon(getClass().getResource("Images/button_rollover_long.png"));
+        newaccount_button.setIcon(II);
     }//GEN-LAST:event_newaccount_buttonMouseEntered
 
     private void newaccount_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newaccount_buttonMouseExited
@@ -792,14 +800,20 @@ public class ManageAccounts_Page extends javax.swing.JPanel {
             manageaccounts_table.setVisible(false);
             manageaccounts_table.setEnabled(false);
         } else {
-            JOptionPane.showMessageDialog(null, "Please select an account from the table.", "Selection Error", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please select an account from the table.",
+                    "Selection Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_view_buttonMouseClicked
 
     private void delete_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_delete_buttonMouseClicked
-        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this account?", "Delete Account", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to delete this account?", "Delete Account",
+                JOptionPane.YES_NO_OPTION);
+
         if (confirm == 0) {
-            FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "ManageAccounts_Page", "Deleted account " + selectedUsername + ".");
+            FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "ManageAccounts_Page",
+                    "Deleted account " + selectedUsername + ".");
+
             FYS.getQueryManager().deleteAccountMA(selectedRow);
             FYS.getInstance().showPage(new ManageAccounts_Page());
         }
@@ -846,21 +860,27 @@ public class ManageAccounts_Page extends javax.swing.JPanel {
     }//GEN-LAST:event_viewback_buttonMouseClicked
 
     private void appmanager_radiobuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appmanager_radiobuttonActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_appmanager_radiobuttonActionPerformed
 
     private void save_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_save_buttonMouseClicked
-        radiobuttonSelected = appmanager_radiobutton.isSelected() || manager_radiobutton.isSelected() || sdworker_radiobutton.isSelected();
-        
-        boolean missingField = employeeid_field.getText().equals("") || firstname_field.getText().equals("") || lastname_field.getText().equals("") || 
-                username_field.getText().equals("") || password_field.getText().equals("") || radiobuttonSelected == false || 
-                location_combo.getSelectedItem().toString().equals("Location");
+        radiobuttonSelected = appmanager_radiobutton.isSelected()
+                || manager_radiobutton.isSelected()
+                || sdworker_radiobutton.isSelected();
+
+        boolean missingField = employeeid_field.getText().equals("")
+                || firstname_field.getText().equals("") || lastname_field.getText().equals("")
+                || username_field.getText().equals("") || password_field.getText().equals("")
+                || radiobuttonSelected == false
+                || location_combo.getSelectedItem().toString().equals("Location");
 
         if (missingField) {
             emptyfield_warning.setVisible(true);
             emptyfield_warning.setEnabled(true);
         } else {
-            FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "ManageAccounts_Page", "Updated account " + username_field.getText() + ".");
+            FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "ManageAccounts_Page",
+                    "Updated account " + username_field.getText() + ".");
+
             editAccount();
             FYS.getInstance().showPage(new ManageAccounts_Page());
         }
@@ -884,7 +904,6 @@ public class ManageAccounts_Page extends javax.swing.JPanel {
     private void userlogs_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userlogs_buttonMouseClicked
         FYS.getInstance().showPage(new Logs_Page());
     }//GEN-LAST:event_userlogs_buttonMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel account_type;

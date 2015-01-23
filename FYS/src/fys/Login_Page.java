@@ -17,7 +17,7 @@ public class Login_Page extends javax.swing.JPanel {
      */
     public Login_Page() {
         initComponents();
-        
+
         manual_panel.setVisible(false);
         manual_panel.setEnabled(false);
     }
@@ -139,8 +139,7 @@ public class Login_Page extends javax.swing.JPanel {
         if (manual_panel.isVisible()) {
             manual_panel.setVisible(false);
             manual_panel.setEnabled(false);
-        }
-        else {
+        } else {
             manual_panel.setVisible(true);
             manual_panel.setEnabled(true);
         }
@@ -159,7 +158,7 @@ public class Login_Page extends javax.swing.JPanel {
     private void login_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_login_buttonMouseClicked
         String username = username_field.getText();
         String password = new String(password_field.getPassword());
-        
+
         FYS.getQueryManager().login(username, password);
     }//GEN-LAST:event_login_buttonMouseClicked
 
@@ -167,7 +166,6 @@ public class Login_Page extends javax.swing.JPanel {
         manual_panel.setVisible(false);
         manual_panel.setEnabled(false);
     }//GEN-LAST:event_exitManualMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
