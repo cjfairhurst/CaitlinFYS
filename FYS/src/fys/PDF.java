@@ -100,7 +100,7 @@ public class PDF {
      * @param s
      * @param font
      * @param fontSize
-     * @return
+     * @return the amount of pixels String s takes up
      */
     public static int stringWidth(String s, PDFont font, double fontSize) {
         try {
@@ -122,13 +122,13 @@ public class PDF {
      * @param phoneNumber
      * @param email
      * @param shippingCountry
-     * @param shippingZipcode
+     * @param shippingZipCode
      * @param shippingStreetAddress
      * @param shippingCity
      */
     public void generateClient(String firstName, String lastName, String country, String city,
             String zipCode, String streetAddress, String phoneNumber, String email,
-            String shippingCountry, String shippingZipcode, String shippingStreetAddress,
+            String shippingCountry, String shippingZipCode, String shippingStreetAddress,
             String shippingCity) {
 
         try {
@@ -154,7 +154,7 @@ public class PDF {
                     + "\nZipcode: " + zipCode + "\nCity: " + city + "\nCountry: " + country;
 
             String shippingInfo = "Street Address: " + shippingStreetAddress + "\nZipcode: "
-                    + shippingZipcode + "\nCity: " + shippingCity + "\nCountry: " + shippingCountry;
+                    + shippingZipCode + "\nCity: " + shippingCity + "\nCountry: " + shippingCountry;
 
             pdfMethod(X_START_NORMAL, Y_START_NORMAL, spacingbetweenlines, boldFont, logoFontSize,
                     "Corendon");
