@@ -12,6 +12,14 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+/**
+ * This class enables service-desk-workers to search, view and update cases.
+ *
+ * @author Caitlin Fairhurst (500703510)
+ * @author Lars Cornelissen (500683862)
+ * @author Floris van Lent (500717249)
+ * @version 1.0
+ */
 public class SWSearch_Page extends javax.swing.JPanel {
 
     String selectedRow;
@@ -22,8 +30,14 @@ public class SWSearch_Page extends javax.swing.JPanel {
     boolean emptyBaggageField = false;
     String caseStatus = "";
 
+    /**
+     * Initiates the page, sets a welcome text, hides the warnings and context-aware manual, shows
+     * the right panel, makes sure neither a client case nor a baggage case is selected and groups
+     * the radio buttons.
+     */
     public SWSearch_Page() {
         initComponents();
+
         welcomeuser.setText("Welcome " + TrackUser.getCurrentUser() + ".");
 
         emptyfield_warning.setVisible(false);
@@ -32,8 +46,10 @@ public class SWSearch_Page extends javax.swing.JPanel {
         editemptyfield_warning.setEnabled(false);
         view_panel.setVisible(false);
         view_panel.setEnabled(false);
+
         setEnabledClient(false);
         setEnabledBaggage(false);
+
         manual_panel.setVisible(false);
         manual_panel.setEnabled(false);
 
@@ -49,6 +65,11 @@ public class SWSearch_Page extends javax.swing.JPanel {
         casestatus.add(resolved_radiobutton);
     }
 
+    /**
+     * Enables fields for a client case if the received boolean is true.
+     *
+     * @param enabled
+     */
     public void setEnabledClient(boolean enabled) {
         firstname_textfield.setEnabled(enabled);
         lastname_textfield.setEnabled(enabled);
@@ -64,6 +85,11 @@ public class SWSearch_Page extends javax.swing.JPanel {
         shippingcountry_textfield.setEnabled(enabled);
     }
 
+    /**
+     * Enables fields for a baggage case if the received boolean is true.
+     *
+     * @param enabled
+     */
     public void setEnabledBaggage(boolean enabled) {
         baggageid_textfield.setEnabled(enabled);
         flightnumber_textfield.setEnabled(enabled);
@@ -75,6 +101,12 @@ public class SWSearch_Page extends javax.swing.JPanel {
         resolved_radiobutton.setEnabled(enabled);
     }
 
+    /**
+     * Fills the table by searching in the column of the database, which is selected based on the
+     * radio button.
+     *
+     * @return a filled table.
+     */
     public ResultSet searchAccount() {
         if (baggageid_radiobutton.isSelected()) {
             searchType = "baggage_id";
@@ -91,17 +123,23 @@ public class SWSearch_Page extends javax.swing.JPanel {
         return FYS.getQueryManager().fillTableSearch(searchType, searchTerm);
     }
 
+    /**
+     * Updates the case in the database with information in the enabled fields.
+     *
+     * @param typeCase either a client or a baggage case
+     * @throws SQLException
+     */
     public void updateCase(String typeCase) throws SQLException {
         String firstName = firstname_textfield.getText();
         String lastName = lastname_textfield.getText();
         String email = email_textfield.getText();
         String telephoneNumber = phonenumber_textfield.getText();
         String streetAddress = streetaddress_textfield.getText();
-        String zipcode = zipcode_textfield.getText();
+        String zipCode = zipcode_textfield.getText();
         String city = city_textfield.getText();
         String country = country_textfield.getText();
         String shippingStreetAddress = shippingstreetaddress_textfield.getText();
-        String shippingZipcode = shippingzipcode_textfield.getText();
+        String shippingZipCode = shippingzipcode_textfield.getText();
         String shippingCity = shippingcity_textfield.getText();
         String shippingCountry = shippingcountry_textfield.getText();
 
@@ -119,72 +157,84 @@ public class SWSearch_Page extends javax.swing.JPanel {
             caseStatus = "resolved";
         }
 
-        FYS.getQueryManager().editCase(typeCase, firstName, lastName, email, telephoneNumber, streetAddress, zipcode, city, country, shippingStreetAddress, shippingZipcode, shippingCity, shippingCountry, baggageID, flightNumber, brand, color, description, caseStatus, selectedRow);
+        FYS.getQueryManager().editCase(typeCase, firstName, lastName, email, telephoneNumber,
+                streetAddress, zipCode, city, country, shippingStreetAddress, shippingZipCode,
+                shippingCity, shippingCountry, baggageID, flightNumber, brand, color, description,
+                caseStatus, selectedRow);
     }
 
+    /**
+     * Loads data from received resultset from a search-query on a specific case in the database
+     * into the textfields.
+     *
+     * @param rs
+     * @throws SQLException
+     */
     public void viewCase(ResultSet rs) throws SQLException {
         if (rs.next()) {
             if (firstname_radiobutton.isSelected() || lastname_radiobutton.isSelected()) {
-                String first_name = rs.getString("first_name");
-                String last_name = rs.getString("last_name");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
                 String email = rs.getString("email");
-                String telephone_number = rs.getString("telephone_number");
-                String street_address = rs.getString("street_Address");
-                String zipcode = rs.getString("zipcode");
+                String telephoneNumber = rs.getString("telephone_number");
+                String streetAddress = rs.getString("street_Address");
+                String zipCode = rs.getString("zipcode");
                 String city = rs.getString("city");
                 String country = rs.getString("country");
-                String shipping_street_address = rs.getString("shipping_street_address");
-                String shipping_zipcode = rs.getString("shipping_zipcode");
-                String shipping_city = rs.getString("shipping_city");
-                String shipping_country = rs.getString("shipping_country");
+                String shippingStreetAddress = rs.getString("shipping_street_address");
+                String shippingZipCode = rs.getString("shipping_zipcode");
+                String shippingCity = rs.getString("shipping_city");
+                String shippingCountry = rs.getString("shipping_country");
 
-                firstname_textfield.setText(first_name);
-                lastname_textfield.setText(last_name);
+                firstname_textfield.setText(firstName);
+                lastname_textfield.setText(lastName);
                 email_textfield.setText(email);
-                phonenumber_textfield.setText(telephone_number);
-                streetaddress_textfield.setText(street_address);
-                zipcode_textfield.setText(zipcode);
+                phonenumber_textfield.setText(telephoneNumber);
+                streetaddress_textfield.setText(streetAddress);
+                zipcode_textfield.setText(zipCode);
                 city_textfield.setText(city);
                 country_textfield.setText(country);
-                shippingstreetaddress_textfield.setText(shipping_street_address);
-                shippingzipcode_textfield.setText(shipping_zipcode);
-                shippingcity_textfield.setText(shipping_city);
-                shippingcountry_textfield.setText(shipping_country);
+                shippingstreetaddress_textfield.setText(shippingStreetAddress);
+                shippingzipcode_textfield.setText(shippingZipCode);
+                shippingcity_textfield.setText(shippingCity);
+                shippingcountry_textfield.setText(shippingCountry);
 
-                firstname_field.setText(first_name);
-                lastname_field.setText(last_name);
+                firstname_field.setText(firstName);
+                lastname_field.setText(lastName);
                 email_field.setText(email);
-                phonenumber_field.setText(telephone_number);
-                streetaddress_field.setText(street_address);
-                zipcode_field.setText(zipcode);
+                phonenumber_field.setText(telephoneNumber);
+                streetaddress_field.setText(streetAddress);
+                zipcode_field.setText(zipCode);
                 city_field.setText(city);
                 country_field.setText(country);
-                shippingstreetaddress_field.setText(shipping_street_address);
-                shippingzipcode_field.setText(shipping_zipcode);
-                shippingcity_field.setText(shipping_city);
-                shippingcountry_field.setText(shipping_country);
+                shippingstreetaddress_field.setText(shippingStreetAddress);
+                shippingzipcode_field.setText(shippingZipCode);
+                shippingcity_field.setText(shippingCity);
+                shippingcountry_field.setText(shippingCountry);
 
-            } else if (baggageid_radiobutton.isSelected() || flightnumber_radiobutton.isSelected()) {
-                String baggage_id = rs.getString("baggage_id");
-                String flight_number = rs.getString("flight_number");
+            } else if (baggageid_radiobutton.isSelected()
+                    || flightnumber_radiobutton.isSelected()) {
+
+                String baggageID = rs.getString("baggage_id");
+                String flightNumber = rs.getString("flight_number");
                 String brand = rs.getString("brand");
                 String color = rs.getString("color");
                 String description = rs.getString("description");
-                String case_status = rs.getString("case_status");
+                String caseStatus = rs.getString("case_status");
 
-                baggageid_textfield.setText(baggage_id);
-                flightnumber_textfield.setText(flight_number);
+                baggageid_textfield.setText(baggageID);
+                flightnumber_textfield.setText(flightNumber);
                 brand_textfield.setText(brand);
                 color_textfield.setText(color);
                 description_textfield.setText(description);
 
-                baggageid_field.setText(baggage_id);
-                flightnumber_field.setText(flight_number);
+                baggageid_field.setText(baggageID);
+                flightnumber_field.setText(flightNumber);
                 brand_field.setText(brand);
                 color_field.setText(color);
                 description_field.setText(description);
 
-                switch (case_status) {
+                switch (caseStatus) {
                     case "found":
                         found_radiobutton.setSelected(true);
                         break;
@@ -201,11 +251,6 @@ public class SWSearch_Page extends javax.swing.JPanel {
         }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -1157,8 +1202,8 @@ public class SWSearch_Page extends javax.swing.JPanel {
     }//GEN-LAST:event_search_buttonMouseClicked
 
     private void newcase_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newcase_buttonMouseEntered
-        ImageIcon II = new ImageIcon(getClass().getResource("Images/button_rollover_long.png"));//Create a rollover effect for the button by changing the background icon.
-        newcase_button.setIcon(II);//Sets the new background icon.
+        ImageIcon II = new ImageIcon(getClass().getResource("Images/button_rollover_long.png"));
+        newcase_button.setIcon(II);
     }//GEN-LAST:event_newcase_buttonMouseEntered
 
     private void newcase_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newcase_buttonMouseExited
@@ -1189,20 +1234,26 @@ public class SWSearch_Page extends javax.swing.JPanel {
     }//GEN-LAST:event_logout_buttonMouseClicked
 
     private void firstname_radiobuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstname_radiobuttonActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_firstname_radiobuttonActionPerformed
 
     private void lastname_radiobuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastname_radiobuttonActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_lastname_radiobuttonActionPerformed
 
     private void smallsearch_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_smallsearch_buttonMouseClicked
-        if (search_field.getText().equals("") || (!baggageid_radiobutton.isSelected() && !flightnumber_radiobutton.isSelected() && !firstname_radiobutton.isSelected() && !lastname_radiobutton.isSelected())) {
+        if (search_field.getText().equals("") || (!baggageid_radiobutton.isSelected()
+                && !flightnumber_radiobutton.isSelected() && !firstname_radiobutton.isSelected()
+                && !lastname_radiobutton.isSelected())) {
+
             emptyfield_warning.setVisible(true);
             emptyfield_warning.setEnabled(true);
         } else {
-            FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "SWSearch_Page", "Searched for case " + search_field.getText() + ".");
+            FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "SWSearch_Page",
+                    "Searched for case " + search_field.getText() + ".");
+
             FYS.getInstance().updateTable(searchcases_table, searchAccount());
+
             emptyfield_warning.setVisible(false);
             emptyfield_warning.setEnabled(false);
         }
@@ -1226,25 +1277,37 @@ public class SWSearch_Page extends javax.swing.JPanel {
     }//GEN-LAST:event_searchcases_tableMouseClicked
 
     private void delete_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_delete_buttonMouseClicked
-        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this account?", "Delete Account", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to delete this account?",
+                "Delete Account", JOptionPane.YES_NO_OPTION);
         if (confirm == 0) {
             if (firstname_radiobutton.isSelected() || lastname_radiobutton.isSelected()) {
                 if (FYS.getQueryManager().checkConnection(selectedRow)) {
-                    JOptionPane.showMessageDialog(null, "This case cannot be deleted because it's already connected to another case.", "Deletion Error", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "This case cannot be deleted because it's "
+                            + "already connected to another case.", "Deletion Error",
+                            JOptionPane.INFORMATION_MESSAGE);
+
                 } else {
-                    FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "SWSearch_Page", "Deleted Client Case " + selectedRow + ".");
+                    FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "SWSearch_Page",
+                            "Deleted Client Case " + selectedRow + ".");
+
                     FYS.getQueryManager().deleteCase("client", selectedRow);
                     FYS.getInstance().showPage(new SWSearch_Page());
                 }
-            } else if (baggageid_radiobutton.isSelected() || flightnumber_radiobutton.isSelected()) {
+            } else if (baggageid_radiobutton.isSelected()
+                    || flightnumber_radiobutton.isSelected()) {
+
                 if (FYS.getQueryManager().checkConnection(selectedRow)) {
-                    JOptionPane.showMessageDialog(null, "This case cannot be deleted because it's already connected to another case.", "Deletion Error", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "This case cannot be deleted because it's "
+                            + "already connected to another case.", "Deletion Error",
+                            JOptionPane.INFORMATION_MESSAGE);
+
                 } else {
-                    FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "ManSearch_Page", "Deleted Baggage Case " + selectedRow + ".");
+                    FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "ManSearch_Page",
+                            "Deleted Baggage Case " + selectedRow + ".");
                     FYS.getQueryManager().deleteCase("baggage", selectedRow);
                     FYS.getInstance().showPage(new SWSearch_Page());
                 }
-
             }
         }
     }//GEN-LAST:event_delete_buttonMouseClicked
@@ -1263,32 +1326,40 @@ public class SWSearch_Page extends javax.swing.JPanel {
         if (tableClicked) {
             try {
                 if (lastname_radiobutton.isSelected() || firstname_radiobutton.isSelected()) {
+
                     viewCase(FYS.getQueryManager().viewCase("client", selectedRow));
                     client_radiobutton1.setSelected(true);
                     viewclient_radiobutton.setSelected(true);
                     setEnabledClient(true);
                     baggage_radiobutton1.setEnabled(false);
                     viewbaggage_radiobutton.setEnabled(false);
-                } else if (baggageid_radiobutton.isSelected() || flightnumber_radiobutton.isSelected()) {
+
+                } else if (baggageid_radiobutton.isSelected()
+                        || flightnumber_radiobutton.isSelected()) {
+
                     viewCase(FYS.getQueryManager().viewCase("baggage", selectedRow));
                     baggage_radiobutton1.setSelected(true);
                     viewbaggage_radiobutton.setSelected(true);
                     setEnabledBaggage(true);
                     client_radiobutton1.setEnabled(false);
                     viewclient_radiobutton.setEnabled(false);
+
                 }
 
             } catch (SQLException ex) {
                 Logger.getLogger(ManageAccounts_Page.class.getName()).log(Level.SEVERE, null, ex);
             }
+
             view_panel.setVisible(true);
             view_panel.setEnabled(true);
             edit_panel.setVisible(false);
             edit_panel.setVisible(false);
             searchcases_table.setVisible(false);
             searchcases_table.setEnabled(false);
+
         } else {
-            JOptionPane.showMessageDialog(null, "Please select an account from the table.", "Selection Error", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please select an account from the table.",
+                    "Selection Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_view_buttonMouseClicked
 
@@ -1311,32 +1382,52 @@ public class SWSearch_Page extends javax.swing.JPanel {
     }//GEN-LAST:event_client_radiobutton1MouseClicked
 
     private void save_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_save_buttonMouseClicked
-        emptyClientField = firstname_field.getText().equals("") || lastname_field.getText().equals("") || streetaddress_textfield.getText().equals("") || zipcode_textfield.getText().equals("") || city_textfield.getText().equals("") || country_textfield.getText().equals("");
-        emptyBaggageField = baggageid_textfield.getText().equals("") && flightnumber_textfield.getText().equals("") && brand_textfield.getText().equals("") && color_textfield.getText().equals("") && description_textfield.getText().equals("");
+        emptyClientField = firstname_field.getText().equals("")
+                || lastname_field.getText().equals("")
+                || streetaddress_textfield.getText().equals("")
+                || zipcode_textfield.getText().equals("")
+                || city_textfield.getText().equals("")
+                || country_textfield.getText().equals("");
+
+        emptyBaggageField = baggageid_textfield.getText().equals("")
+                && flightnumber_textfield.getText().equals("")
+                && brand_textfield.getText().equals("") && color_textfield.getText().equals("")
+                && description_textfield.getText().equals("");
+
         if (client_radiobutton1.isSelected()) {
             if (emptyClientField) {
                 editemptyfield_warning.setVisible(true);
                 editemptyfield_warning.setEnabled(true);
             } else {
                 try {
-                    FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "SWSearch_Page", "Updated Client Case " + firstname_field.getText() + " " + lastname_field.getText() + ".");
+                    FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "SWSearch_Page",
+                            "Updated Client Case " + firstname_field.getText() + " "
+                            + lastname_field.getText() + ".");
+
                     updateCase("client");
+
                 } catch (SQLException ex) {
                     Logger.getLogger(NewCase_Page.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 FYS.getInstance().showPage(new SWSearch_Page());
             }
         } else if (baggage_radiobutton1.isSelected()) {
-            if (emptyBaggageField || (!found_radiobutton.isSelected() && !lost_radiobutton.isSelected() && !resolved_radiobutton.isSelected())) {
+            if (emptyBaggageField || (!found_radiobutton.isSelected()
+                    && !lost_radiobutton.isSelected() && !resolved_radiobutton.isSelected())) {
+
                 editemptyfield_warning.setVisible(true);
                 editemptyfield_warning.setEnabled(true);
             } else {
                 try {
-                    FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "SWSearch_Page", "Updated Baggage Case.");
+                    FYS.getQueryManager().createLog(TrackUser.getCurrentUser(), "SWSearch_Page",
+                            "Updated Baggage Case.");
+
                     updateCase("baggage");
+
                 } catch (SQLException ex) {
                     Logger.getLogger(NewCase_Page.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
                 FYS.getInstance().showPage(new SWSearch_Page());
             }
         }
@@ -1390,13 +1481,13 @@ public class SWSearch_Page extends javax.swing.JPanel {
         String firstName = null;
         String lastName = null;
         String email = null;
-        String phonenumber = null;
+        String phoneNumber = null;
         String streetAddress = null;
-        String zipcode = null;
+        String zipCode = null;
         String city = null;
         String country = null;
         String shippingStreetAddress = null;
-        String shippingZipcode = null;
+        String shippingZipCode = null;
         String shippingCity = null;
         String shippingCountry = null;
         String baggageID;
@@ -1404,27 +1495,29 @@ public class SWSearch_Page extends javax.swing.JPanel {
         String brand;
         String color;
         String description;
-        String case_status = null;
+        String caseStatus = null;
 
         if (viewclient_radiobutton.isSelected()) {
 
             firstName = firstname_textfield.getText();
             lastName = lastname_textfield.getText();
             email = email_textfield.getText();
-            phonenumber = phonenumber_textfield.getText();
+            phoneNumber = phonenumber_textfield.getText();
             streetAddress = streetaddress_textfield.getText();
-            zipcode = zipcode_textfield.getText();
+            zipCode = zipcode_textfield.getText();
             city = city_textfield.getText();
             country = country_textfield.getText();
             shippingStreetAddress = shippingstreetaddress_textfield.getText();
-            shippingZipcode = shippingzipcode_textfield.getText();
+            shippingZipCode = shippingzipcode_textfield.getText();
             shippingCity = shippingcity_textfield.getText();
             shippingCountry = shippingcountry_textfield.getText();
 
             PDFGenerator pdf = new PDFGenerator("client");
-            pdf.generateClient(firstName, lastName, country, city, zipcode, streetAddress, phonenumber, email, shippingCountry, shippingZipcode, shippingStreetAddress, shippingCity);
+            pdf.generateClient(firstName, lastName, country, city, zipCode, streetAddress,
+                    phoneNumber, email, shippingCountry, shippingZipCode, shippingStreetAddress,
+                    shippingCity);
 
-            pdf.save(firstName +"_"+ lastName +"_"+ zipcode + ".pdf");
+            pdf.save(firstName + "_" + lastName + "_" + zipCode + ".pdf");
 
         } else if (viewbaggage_radiobutton.isSelected()) {
 
@@ -1435,20 +1528,19 @@ public class SWSearch_Page extends javax.swing.JPanel {
             description = description_textfield.getText();
 
             if (found_radiobutton.isSelected()) {
-                case_status = "found";
+                caseStatus = "found";
             } else if (lost_radiobutton.isSelected()) {
-                case_status = "lost";
+                caseStatus = "lost";
             } else if (resolved_radiobutton.isSelected()) {
-                case_status = "resolved";
+                caseStatus = "resolved";
             }
 
             PDFGenerator pdf = new PDFGenerator("baggage");
-            pdf.generateBaggage(baggageID, flightNumber, brand, color, description, case_status);
+            pdf.generateBaggage(baggageID, flightNumber, brand, color, description, caseStatus);
 
-            pdf.save(baggageID + "_"+  flightNumber +"_"+ color + ".pdf");
+            pdf.save(baggageID + "_" + flightNumber + "_" + color + ".pdf");
         }
     }//GEN-LAST:event_PDF_button1MouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel PDF_button;
