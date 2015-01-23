@@ -1,24 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fys;
 
 /**
+ * This class stores the username of a user, we use it to store the currently logged in user.
  *
- * @author Caitlin
+ * @author Caitlin Fairhurst (500703510)
+ * @author Lars Cornelissen (500683862)
+ * @author Floris van Lent (500717249)
+ * @version 1.0
  */
 public class TrackUser {
-    
+
     private static String currentUser;
-    
-    public static String getCurrentUser () {
+
+    /**
+     * @return the username of the currently logged in user.
+     */
+    public static String getCurrentUser() {
         return TrackUser.currentUser;
     }
-    
-    public static void setCurrentUser (String username) {
+
+    /**
+     * Sets a username as the currently logged in user.
+     *
+     * @param username
+     */
+    public static void setCurrentUser(String username) {
         TrackUser.currentUser = username;
     }
-    
 }
